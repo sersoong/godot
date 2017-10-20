@@ -573,6 +573,9 @@ void ProjectManager::_unhandled_input(const InputEvent &p_ev) {
 		if (!k.pressed)
 			return;
 
+		if (tabs->get_current_tab() != 0)
+			return;
+
 		bool scancode_handled = true;
 
 		switch (k.scancode) {
@@ -855,6 +858,7 @@ void ProjectManager::_load_recent_projects() {
 
 		TextureFrame *tf = memnew(TextureFrame);
 		tf->set_texture(icon);
+		tf->set_v_size_flags(SIZE_EXPAND);
 		hb->add_child(tf);
 
 		VBoxContainer *vb = memnew(VBoxContainer);

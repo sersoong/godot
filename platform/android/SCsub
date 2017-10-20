@@ -44,8 +44,18 @@ gradle_baseout = open(abspath + "/java/build.gradle", "wb")
 
 gradle_text = gradle_basein.read()
 
+gradle_maven_flat_text = ""
+if len(env.android_flat_dirs) > 0:
+    gradle_maven_flat_text += "flatDir {\n"
+    gradle_maven_flat_text += "\tdirs "
+    for x in env.android_flat_dirs:
+        gradle_maven_flat_text += "'" + x + "',"
+
+    gradle_maven_flat_text = gradle_maven_flat_text[:-1]
+    gradle_maven_flat_text += "\n\t}\n"
 
 gradle_maven_repos_text = ""
+gradle_maven_repos_text += gradle_maven_flat_text
 
 if len(env.android_maven_repos) > 0:
     gradle_maven_repos_text += ""
@@ -143,7 +153,7 @@ elif env['android_arch'] == 'armv7':
 elif env['android_arch'] == 'x86':
     lib_arch_dir = 'x86'
 else:
-    print 'WARN: Architecture not suitable for embedding into APK; keeping .so at \\bin'
+    print('WARN: Architecture not suitable for embedding into APK; keeping .so at \\bin')
 
 if lib_arch_dir != '':
     if env['target'] == 'release':
